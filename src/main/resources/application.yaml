@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: oncode
+  datasource:
+    url: jdbc:postgresql://localhost:5432/oncode
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      format_sql: true
