@@ -14,18 +14,25 @@ import java.util.Map;
 public class SessionController {
     private SessionService service;
 
-    @PostMapping("syncFiles")
-    public List<Resource> syncFiles(@RequestBody Map<String, Long> payload) {
-        return service.syncFiles(payload.get("session_id"));
+    @PostMapping("updateFile")
+    public void updateFile(@RequestBody Map<String, Object> payload) {
+        service.updateFile(
+                Long.parseLong(String.valueOf(payload.get("session_id"))),
+                String.valueOf(payload.get("text"))
+        );
     }
 
-//    @PostMapping("downloadFiles")
-//    public List<Resource> downloadFiles(@RequestBody )
+    @GetMapping("downloadFile")
+    public String downloadFile(@RequestParam Long session_id) {
+        return service.downloadFile(session_id);
+    }
 
+    @PostMapping("addFriendToSession")
     public void addFriendToSession(@RequestBody Map<String, Long> payload) {
         service.addFriend(payload.get("session_id"), payload.get("friend_id"));
     }
 
+    @PostMapping("getOtherSession")
     public Map<String,Object> getOtherSession(@RequestBody Map<String, Long> payload) {
         return service.getSessionByUser(payload.get("user_id"));
     }

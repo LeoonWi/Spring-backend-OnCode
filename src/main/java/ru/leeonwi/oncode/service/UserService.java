@@ -10,6 +10,8 @@ import ru.leeonwi.oncode.repository.SessionRepository;
 import ru.leeonwi.oncode.repository.UserRepository;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 @AllArgsConstructor
@@ -48,6 +50,8 @@ public class UserService {
             if (!folder.exists()) {
                 boolean created = folder.mkdirs();
                 if (!created) return false;
+                session.setPathToFolder(session.getPathToFolder() + "/File");
+                Files.createFile(Path.of(session.getPathToFolder()));
             } else return false;
         } catch (Exception e) {
             return false;

@@ -9,6 +9,7 @@ import ru.leeonwi.oncode.model.User;
 import ru.leeonwi.oncode.repository.SessionRepository;
 import ru.leeonwi.oncode.repository.UserRepository;
 
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,30 +24,30 @@ public class SessionService {
     private final SessionRepository sessionRepository;
     private final UserRepository userRepository;
 
-    public List<Resource> syncFiles(Long session_id) {
-        List<Resource> files = new ArrayList<>();
+    public void updateFile(Long session_id, String text) {
+            String folderPath = sessionRepository.findPathToFolderById(session_id);
 
-        try {
-            Path folderPath = Paths.get(sessionRepository.findPathToFolderById(session_id));
+            try(FileWriter writer = new FileWriter(folderPath, false)) {
+                writer.write(text);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    }
 
-            // Получение списка файлов в каталоге
-            Files.list(folderPath)
-                    .forEach(filePath -> {
-                        try {
-                            // Преобразование каждого файла в объект Resource
-                            Resource resource = new UrlResource(filePath.toUri());
-                            if (resource.exists() && resource.isReadable()) {
-                                files.add(resource);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
-        } catch (Exception e) {
+    public String downloadFile(Long session_id) {
+        String folderPath = sessionRepository.findPathToFolderById(session_id);
+        StringBuffer stringBuffer = new StringBuffer();
+        try(BufferedReader br = new BufferedReader(new FileReader(folderPath))) {
+            String line;
+            while((line = br.readLine()) != null) {
+                stringBuffer.append(line).append("\n");
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return files;
+        return stringBuffer.toString();
     }
 
     public void addFriend(Long session_id, Long friend_id) {
