@@ -44,7 +44,7 @@ public class UserService {
     private boolean createSession(User owner) {
         Session session = new Session();
         session.setOwner(owner);
-        session.setPathToFolder("src/main/resources/static/" + owner.getEmail());
+        session.setPathToFolder("res/" + owner.getEmail());
         try {
             File folder = new File(session.getPathToFolder());
             if (!folder.exists()) {

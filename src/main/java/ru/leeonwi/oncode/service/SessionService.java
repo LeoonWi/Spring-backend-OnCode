@@ -25,17 +25,19 @@ public class SessionService {
     private final UserRepository userRepository;
 
     public void updateFile(Long session_id, String text) {
-            String folderPath = sessionRepository.findPathToFolderById(session_id);
-
-            try(FileWriter writer = new FileWriter(folderPath, false)) {
-                writer.write(text);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        Session session = sessionRepository.getById(session_id);
+        String folderPath = session.getPathToFolder();
+        try(FileWriter writer = new FileWriter(folderPath, false)) {
+            writer.write(text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public String downloadFile(Long session_id) {
-        String folderPath = sessionRepository.findPathToFolderById(session_id);
+    public Map<String, String> downloadFile(Long session_id) {
+        Session session = sessionRepository.getById(session_id);
+        String folderPath = session.getPathToFolder();
+        Map<String, String> result = new HashMap<>();
         StringBuffer stringBuffer = new StringBuffer();
         try(BufferedReader br = new BufferedReader(new FileReader(folderPath))) {
             String line;
@@ -47,7 +49,9 @@ public class SessionService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return stringBuffer.toString();
+        result.put("string", stringBuffer.toString());
+
+        return result;
     }
 
     public void addFriend(Long session_id, Long friend_id) {

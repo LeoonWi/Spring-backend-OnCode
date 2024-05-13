@@ -10,7 +10,7 @@ import java.util.List;
 public interface SessionRepository extends JpaRepository<Session, Long> {
     User findOwnerById(Long id);
     Session findByOwner(User user);
-    String findPathToFolderById(Long id);
+    Session getById(Long id);
 
     @Query("SELECT s FROM Session s JOIN s.members m WHERE m.id = :userId")
     Session findSessionsByUserId(Long userId);

@@ -23,13 +23,13 @@ public class SessionController {
     }
 
     @GetMapping("downloadFile")
-    public String downloadFile(@RequestParam Long session_id) {
+    public Map<String, String> downloadFile(@RequestParam Long session_id) {
         return service.downloadFile(session_id);
     }
 
     @PostMapping("addFriendToSession")
     public void addFriendToSession(@RequestBody Map<String, Long> payload) {
-        service.addFriend(payload.get("session_id"), payload.get("friend_id"));
+        service.addFriend(payload.get("session_id"), payload.get("user_id"));
     }
 
     @PostMapping("getOtherSession")
