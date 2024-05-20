@@ -11,9 +11,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     Friend findFriendBySenderAndRecipient(User sender, User recipient);
 
-//    @Query("SELECT f FROM Friend f WHERE f.sender.id = :userId OR f.recipient.id = :userId")
-//    Friend findAllFriendsByUserId(Long userId);
-
     @Query("SELECT DISTINCT u FROM User u " +
             "INNER JOIN Friend f ON u.id = f.sender.id OR u.id = f.recipient.id " +
             "WHERE u.id != :userId AND f.status = true")

@@ -2,7 +2,6 @@ package ru.leeonwi.oncode.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.leeonwi.oncode.model.User;
 import ru.leeonwi.oncode.service.FriendService;
 import ru.leeonwi.oncode.service.UserService;
 
